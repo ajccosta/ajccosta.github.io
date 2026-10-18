@@ -130,6 +130,7 @@
     foldsClose: { help: 'Close every fold',                 run: function () { folds().forEach(function (d) { d.open = false; }); } }
   };
   // Keys as less names them: ^D is Ctrl-D, ESC-u is Escape then u.
+  var KEYBOARD = !matchMedia('(hover: none) and (pointer: coarse)').matches;
   var KEYS = {
     down: ['j', 'e', '^E', '^N', 'RETURN', 'DOWN'],
     up: ['k', 'y', '^Y', '^P', '^K', 'UP'],
@@ -186,7 +187,8 @@
     if (mode === 'input') return render(input, false, true);
     if (message) return render(message, true, true);
     if (help && !help.hidden) return render(atEnd() ? 'HELP -- END -- Press q when done' : 'HELP -- Press SPACE for more, or q when done', true, true);
-    if (mode === 'start') return render('Manual page costa(1) line 1 (press h for help' + (KEYS.quit ? ' or q to quit)' : ')'), true, true);
+    // Touch screens have no keys to press, so they get the page name alone.
+    if (mode === 'start') return render('Manual page costa(1) line 1' + (!KEYBOARD ? '' : ' (press h for help' + (KEYS.quit ? ' or q to quit)' : ')')), true, true);
     if (atEnd()) return render('(END)', true, true);
     render(':' + count, false, true);
   }

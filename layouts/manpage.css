@@ -17,6 +17,9 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--bg); }
 html, body { overscroll-behavior: none; }   /* a terminal doesn't bounce past the top or bottom */
+/* No scrollbar, like a terminal pager; the page still scrolls. */
+html, .less-help { scrollbar-width: none; }
+html::-webkit-scrollbar, .less-help::-webkit-scrollbar { display: none; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.25 var(--mono); overflow-wrap: break-word; padding-bottom: var(--row); }
 a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 a:hover, a:focus-visible { background: var(--rev-bg); color: var(--rev-fg); outline: 0; text-decoration: none; }
@@ -196,4 +199,5 @@ a.blk:hover .blk-label { background: var(--rev-bg); }
   .sheet-foot span:nth-child(3) { display: none; }
   .sheet-foot { grid-template-columns: 1fr auto; }
   .die-shot img { width: 112px; }
+  .less-prompt { padding: 0 0.5ch; }
 }
