@@ -1,0 +1,25 @@
+/* Loaded after every layout (see index.html): rules that hold whatever the layout is. */
+
+/* A hidden layout picker stays hidden whatever the layout's own display rule. */
+.layout-switch[hidden] { display: none !important; }
+/* Filtered-out project cards too, even when a layout makes the card a grid. */
+.card[hidden] { display: none !important; }
+
+/* The photo is always shown in its own colours. */
+.die-shot img { filter: none !important; mix-blend-mode: normal !important; }
+
+/* Contact links under the name, one line that wraps between links, like the CV header. */
+.contacts .c { white-space: nowrap; }
+
+/* The block diagram's three layers stay side by side on phones too. */
+.blk-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 600px) {
+  .blk-row.three { gap: 6px; }
+  .blk-row.three .cell { min-width: 0; padding-left: 6px; padding-right: 6px; overflow-wrap: anywhere; }
+  .blk-row.three .blk-label { font-size: 9px; letter-spacing: 0.02em; }
+  .blk-row.three b { font-size: 13px; }
+  .blk-row.three small { font-size: 10px; }
+}
+
+/* Long explanations (research entries) start folded; the summary line opens them. */
+details.more > summary { cursor: pointer; }

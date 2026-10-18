@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>André Costa</title>
+<meta name="description" content="André Costa — PhD student at CMU and NOVA working on concurrent data structures, memory allocation, memory reclamation and transactional memory.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link id="layout-css" rel="stylesheet" href="layouts/manpage.css">
+<script>
+  // Layouts: one stylesheet in layouts/ per entry; the markup below is shared by all of them.
+  // Bump LAYOUT_VERSION and the ?v= on base.css, site.js and render.js together when they change.
+  // Visitors only get the layouts in OFFERED: ?layout=name picks one of them and the switch in the
+  // top bar (shown when there are two or more) remembers the choice. The others stay in layouts/.
+  var LAYOUTS = { manpage: 'Man page' };
+  // Layouts that also bring behaviour load layouts/<name>.js the first time they are picked.
+  // The script stays loaded and acts only while <html data-layout> names its layout.
+  var OFFERED = ['manpage'];
+  var LAYOUT_JS = { manpage: 1 };
+  var LAYOUT_VERSION = 20;
+  function setLayout(name) {
+    document.getElementById('layout-css').href = 'layouts/' + name + '.css?v=' + LAYOUT_VERSION;
+    document.documentElement.dataset.layout = name;
+    if (LAYOUT_JS[name] === 1) {
+      LAYOUT_JS[name] = 'loaded';
+      var s = document.createElement('script');
+      s.src = 'layouts/' + name + '.js?v=' + LAYOUT_VERSION;
+      document.head.appendChild(s);
+    }
+  }
+  (function () {
+    var name = new URLSearchParams(location.search).get('layout');
+    try { name = name || localStorage.getItem('layout'); } catch (e) {}
+    setLayout(OFFERED.indexOf(name) >= 0 ? name : OFFERED[0]);
+  })();
+</script>
+<link rel="stylesheet" href="base.css?v=17">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<div id="site"></div>
+<noscript>This page is built from site.js and needs JavaScript.</noscript>
+<script src="site.js?v=23"></script>
+<script src="render.js?v=17"></script>
+</body>
+</html>
