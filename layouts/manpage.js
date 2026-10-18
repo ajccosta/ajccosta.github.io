@@ -8,7 +8,7 @@
   var root = document.documentElement;
   function active() { return root.dataset.layout === LAYOUT; }
 
-  var prompt, help, lastSearch = null, lastDir = 1, count = '', mode = 'start', input = '', message = '', escPending = false;
+  var prompt, help, lastSearch = null, lastHit = null, lastDir = 1, count = '', mode = 'start', input = '', message = '', escPending = false;
   var previousLayout = null;
 
   // ---- scrolling: the page, or the help screen while it is open --------------------------------
@@ -71,20 +71,33 @@
     return hits;
   }
   function search(pattern, dir) {
+    // Only a new / or ? sets the direction; n and N repeat it or reverse it without changing it.
+    if (pattern != null) { lastDir = dir; lastHit = null; }
     if (pattern === '' || pattern == null) pattern = lastSearch;
     if (pattern == null) return say('No previous regular expression');
-    lastSearch = pattern; lastDir = dir;
+    lastSearch = pattern;
     // A hit inside a folded explanation sits at its summary line; going to it unfolds it, as in vim.
     function at(h) { var f = h.closest('details:not([open])'); return (f ? f.querySelector('summary') : h).getBoundingClientRect().top + scrollY; }
     var hits = highlight(pattern).map(function (h) { return { el: h, y: at(h) }; })
       .sort(function (a, b) { return a.y - b.y; });
-    var from = scrollY, eps = row() / 2, hit;
+    if (!hits.length) return say('Pattern not found  (press RETURN)');
+    // Count from the last match we went to while the page is still where we left it (near the
+    // bottom, a match can't reach the top line), else from the top line.
+    var from = lastHit && lastHit.top === top() ? lastHit.y : top(), eps = row() / 2, hit, wrapped = '';
     if (dir > 0) hit = hits.find(function (h) { return h.y > from + eps; });   // starts below the top line
     else hit = hits.filter(function (h) { return h.y < from - eps; }).pop();
-    if (!hit) return say('Pattern not found  (press RETURN)');
+    if (!hit) {   // past the last match: carry on from the other end, as vim does
+      hit = dir > 0 ? hits[0] : hits[hits.length - 1];
+      wrapped = dir > 0 ? 'search hit BOTTOM, continuing at TOP' : 'search hit TOP, continuing at BOTTOM';
+    }
     var fold = hit.el.closest('details:not([open])');
     if (fold) fold.open = true;
-    goTo(hit.el.getBoundingClientRect().top + scrollY);
+    document.querySelectorAll('.less-now').forEach(function (e) { e.classList.remove('less-now'); });
+    hit.el.classList.add('less-now');
+    var y = hit.el.getBoundingClientRect().top + scrollY;
+    goTo(y);
+    lastHit = { y: y, top: top() };
+    if (wrapped) return say(wrapped);
     status();
   }
 

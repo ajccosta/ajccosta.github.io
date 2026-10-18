@@ -46,6 +46,8 @@ img { max-width: 100%; }
 .less-rev { background: var(--rev-bg); color: var(--rev-fg); }
 .less-cursor { display: inline-block; width: 1ch; height: 1.1em; vertical-align: -0.2em; background: var(--fg); }
 mark.less-hit { background: var(--rev-bg); color: var(--rev-fg); }
+/* the match n/N last went to */
+mark.less-hit.less-now { outline: 1px solid var(--rev-bg); outline-offset: 2px; }
 .less-hit-before::before { background: var(--rev-bg); color: var(--rev-fg) !important; width: max-content; }
 .less-help { position: fixed; inset: 0 0 1.25em 0; z-index: 9; margin: 0; padding: 0 1ch; overflow: auto; background: var(--bg); color: var(--fg); font: inherit; white-space: pre; }
 .less-help[hidden] { display: none; }
