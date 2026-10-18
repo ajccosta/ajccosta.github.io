@@ -116,7 +116,7 @@ h3 { color: var(--bold); }
 .entry header, .card header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1ch; margin-left: calc(-1 * (var(--in) - var(--sub))); }
 .entry p, .card p { margin: 0 0 0.6em; }
 /* folded explanations, as [+] / [-] lines (za, zo, zc, zR, zM in layouts/manpage.js) */
-details.more > summary { list-style: none; color: var(--fg); }
+details.more > summary { list-style: none; color: var(--fg); width: fit-content; }
 details.more > summary::-webkit-details-marker { display: none; }
 details.more > summary::before { content: "[+] "; color: var(--dim); }
 details.more[open] > summary::before { content: "[-] "; }
